@@ -17,7 +17,7 @@ fun NavigationComposable(context: Context, navHostController: NavHostController)
 
     NavHost(navController = navHostController, startDestination = startDestination) {
         composable(Home.route) {
-            Home(navHostController)
+            Home(context, navHostController)
         }
         composable(Profile.route) {
             Profile(context, navHostController)
