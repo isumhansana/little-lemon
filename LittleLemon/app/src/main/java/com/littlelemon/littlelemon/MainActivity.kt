@@ -14,11 +14,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -88,20 +93,29 @@ class MainActivity : ComponentActivity() {
 }
 
 class MenuItemColumn(context: Context) {
+
     private val database by lazy {
         Room.databaseBuilder(context, AppDatabase::class.java, "database").build()
     }
+
+
     @OptIn(ExperimentalGlideComposeApi::class)
     @Composable
-    fun MenuItemsList() {
+    fun MenuItemsList(searchPhrase : String) {
         val databaseMenuItems by database.MenuItemDao().getAll().observeAsState(emptyList())
+        var menuItems = databaseMenuItems
+
+        if (searchPhrase != "") {
+            menuItems = menuItems.filter { searchPhrase.lowercase() in (it.title).lowercase() }
+        }
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxHeight()
                 .padding(10.dp)
         ) {
             items(
-                items = databaseMenuItems,
+                items = menuItems,
                 itemContent = { menuItem ->
                     Row(
                         modifier = Modifier
