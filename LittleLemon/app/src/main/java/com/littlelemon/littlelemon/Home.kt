@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,10 +14,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -41,6 +46,10 @@ import androidx.navigation.NavHostController
 @Composable
 fun Home(context: Context, navController: NavHostController){
     var searchPhrase by remember {
+        mutableStateOf("")
+    }
+
+    var buttonPhrase by remember {
         mutableStateOf("")
     }
 
@@ -128,6 +137,116 @@ fun Home(context: Context, navController: NavHostController){
                 )
             }
         }
-        MenuItemColumn(context = context).MenuItemsList(searchPhrase)
+        Text(
+            "ORDER FOR DELIVERY!",
+            fontWeight = FontWeight.Bold,
+            fontSize = 27.sp,
+            modifier = Modifier.padding(top = 30.dp, start = 10.dp, bottom = 10.dp)
+        )
+        Row(
+            modifier = Modifier.horizontalScroll(rememberScrollState())
+        ) {
+            Button(
+                onClick = {
+                    buttonPhrase = if(buttonPhrase=="starters"){
+                        ""
+                    } else {
+                        "starters"
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color(0xff495e57),
+                    containerColor = if(buttonPhrase=="starters"){
+                        Color(0xff333333)
+                    }else{
+                        Color(0xffedefee)
+                    }
+                ),
+                modifier = Modifier.padding(start = 10.dp, bottom = 20.dp)
+                ) {
+                Text(
+                    text = "Starters",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+
+            Button(
+                onClick = {
+                    buttonPhrase = if(buttonPhrase=="mains"){
+                        ""
+                    } else {
+                        "mains"
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color(0xff495e57),
+                    containerColor = if(buttonPhrase=="mains"){
+                        Color(0xff333333)
+                    }else{
+                        Color(0xffedefee)
+                    }
+                ),
+                modifier = Modifier.padding(start = 10.dp, bottom = 20.dp)
+            ) {
+                Text(
+                    text = "Mains",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+
+            Button(
+                onClick = {
+                    buttonPhrase = if(buttonPhrase=="desserts"){
+                        ""
+                    } else {
+                        "desserts"
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color(0xff495e57),
+                    containerColor = if(buttonPhrase=="desserts"){
+                        Color(0xff333333)
+                    }else{
+                        Color(0xffedefee)
+                    }
+                ),
+                modifier = Modifier.padding(start = 10.dp, bottom = 20.dp)
+            ) {
+                Text(
+                    text = "Desserts",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+
+            Button(
+                onClick = {
+                    buttonPhrase = if(buttonPhrase=="drinks"){
+                        ""
+                    } else {
+                        "drinks"
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color(0xff495e57),
+                    containerColor = if(buttonPhrase=="drinks"){
+                        Color(0xff333333)
+                    }else{
+                        Color(0xffedefee)
+                    }
+                ),
+                modifier = Modifier.padding(start = 10.dp, bottom = 20.dp)
+            ) {
+                Text(
+                    text = "Drinks",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            }
+        }
+        HorizontalDivider(color = Color.Black)
+        MenuItemColumn(context = context).MenuItemsList(searchPhrase, buttonPhrase)
     }
 }

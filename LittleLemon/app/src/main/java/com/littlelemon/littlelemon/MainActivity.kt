@@ -14,16 +14,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -101,12 +96,20 @@ class MenuItemColumn(context: Context) {
 
     @OptIn(ExperimentalGlideComposeApi::class)
     @Composable
-    fun MenuItemsList(searchPhrase : String) {
+    fun MenuItemsList(searchPhrase : String, buttonPhrase : String) {
         val databaseMenuItems by database.MenuItemDao().getAll().observeAsState(emptyList())
         var menuItems = databaseMenuItems
 
         if (searchPhrase != "") {
             menuItems = menuItems.filter { searchPhrase.lowercase() in (it.title).lowercase() }
+        }
+
+        if (buttonPhrase != "") {
+            menuItems = menuItems.filter { buttonPhrase in (it.category) }
+        }
+
+        if (searchPhrase != "" && buttonPhrase != "") {
+            menuItems = menuItems.filter { searchPhrase.lowercase() in (it.title).lowercase() && buttonPhrase in (it.category) }
         }
 
         LazyColumn(
